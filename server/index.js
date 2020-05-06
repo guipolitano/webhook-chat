@@ -30,7 +30,8 @@ io.on('connection', (socket) => {
     socket.on('message', (msg) => {
         const message = new Message({
             message: msg.message, 
-            user: msg.user
+            user: msg.user,
+            createdAt: new Date()
         });
 
         //Salva a mensagem no banco
@@ -39,7 +40,7 @@ io.on('connection', (socket) => {
         });
 
         //Envia a mensagem devolta
-        socket.broadcast.emit('push', msg);
+        socket.broadcast.emit('push', message);
     })
 })
 
