@@ -10,7 +10,7 @@ const { Search } = Input;
 const { Meta } = Card;
 function App() {
   // Cria a variável Socket para fazer a conexão com o backend
-  // const [socket, setSocket] = useState(io("http://localhost:5000"));
+  const [socket, setSocket] = useState(io("http://localhost:5000"));
 
   //Cria os Estados iniciais da aplicação
   const [chat, setChat] = useState([]);
@@ -19,7 +19,7 @@ function App() {
 
   //Cria a função de enviar mensagem
   const handleSubmit = () => {
-    // socket.emit("message", { user, message }); //Envia a mensagem para o socket
+    socket.emit("message", { user, message }); //Envia a mensagem para o socket
     setChat([...chat, {user, message}]);     //Altera o estado do Chat para incluir a nova mensagem
     setMessage(""); //Reseta o input
   }
@@ -33,10 +33,10 @@ function App() {
   //Faz a conexão com o socket ao montar o componente
   useEffect(()=>{
     //Ao iniciar o componente, conecta e resgata os chats do banco de dados
-    // socket.on('init', (msg) => setChat([...chat, ...msg.reverse()]));
+    socket.on('init', (msg) => setChat([...chat, ...msg.reverse()]));
 
     // Ao chegar uma mensagem nova no banco de dados, atualiza o chat
-    // socket.on("push", (msg) => setChat([...chat, msg]));
+    socket.on("push", (msg) => setChat([...chat, msg]));
   }, []);
 
   //Sempre que a variável chat for atualizada, desce o chat pra a última mensagem
